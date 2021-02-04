@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Smash Notes - PC</title>
+
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+
+     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+     <link rel="stylesheet" type="text/css" href="css/glider.min.css">
+
+     <style>
+          .form-control::-webkit-input-placeholder {
+               color: #9F9F9F;
+          }
+
+          .horizontal-scroll-wrapper {
+               width: 100px;
+               height: 300px;
+               overflow-y: auto;
+               overflow-x: hidden;
+               transform: rotate(-90deg);
+               transform-origin: right top;
+               transform: rotate(-90deg) translateY(-100px);
+          }
+
+          .horizontal-scroll-wrapper>div {
+               width: 100px;
+               height: 100px;
+               transform: rotate(90deg);
+               transform-origin: right top;
+          }
+
+          .card-view {
+               background-color: #EFEFEF;
+               border-radius: 15px;
+               color: #292929;
+          }
+
+          .card-view .character {
+               height: 70px;
+               width: 70px;
+               display: inline-block;
+          }
+
+          .modal-content {
+               background-color: #292929;
+          }
+
+          .stage {
+               filter: invert(10%) sepia(0%) saturate(0%) hue-rotate(230deg) brightness(94%) contrast(83%);
+          }
+     </style>
+</head>
+
+<body style="background-color: #3C3C3C;">
+     <div class="container mt-5 text-light mb-0">
+          <div class="row">
+               <div class="col-auto rounded px-1" style="background-color: #FF3837;" id="selected-color"></div>
+               <div class="col">
+                    <input type="text" class="form-control bg-transparent border-0 text-light fw-bold fs-1"
+                         placeholder="Título da Anotação">
+               </div>
+          </div>
+
+          <p id="date">Data</p>
+
+          <div class="row py-2" style="background-color: #292929; border-radius: 15px;">
+               <div class="col-auto">
+                    <button type="button" class="rounded-circle btn p-0"
+                         style="background-color: #FF0100; width: 50px; height: 50px; border:2px solid #3c3c3c"
+                         data-bs-toggle="modal" data-bs-target="#modalChar" data-bs-player="player1">
+                         <img src="Svgs/char/ic_char_00.svg" height="100%" id="player1">
+                    </button>
+               </div>
+               <div class="col mx-5 text-center my-auto fw-bold fs-2">Vs.</div>
+               <div class="col-auto">
+
+                    <button type="button" class="rounded-circle btn p-0"
+                         style="background-color: #308AFF; width: 50px; height: 50px; border:2px solid #3c3c3c"
+                         data-bs-toggle="modal" data-bs-target="#modalChar" data-bs-player="player2">
+                         <img src="Svgs/char/ic_char_00.svg" height="100%" id="player2">
+                    </button>
+               </div>
+          </div>
+
+          <div class="glider-contain text-center my-4">
+               <div class="glider glider-stages" id="stages-selecionados">
+               </div>
+
+               <button aria-label="Previous" class="glider-prev glider-prev-stages">«</button>
+               <button aria-label="Next" class="glider-next glider-next-stages">»</button>
+               <div role="tablist" class="dots dots-stages"></div>
+          </div>
+
+          <div class="row">
+               <textarea class="form-control border-0 text-light bg-transparent" placeholder="Faça sua Anotação..."
+                    rows="5" id="anotacao"></textarea>
+          </div>
+
+          <div style="border-radius: 15px 15px 0 0; background-color: #292929;" class="px-2 py-4 mt-5">
+               <div class="row mt-2">
+                    <div class="my-auto text-center fw-bold">
+                         Selecione uma Cor
+                    </div>
+               </div>
+
+               <div class="row mt-2 px-5">
+                    <div class="col glider-contain text-center mt-4">
+                         <div class="glider glider-colors">
+                              <div>
+                                   <button type="button" onclick="selecionarCor(this)"
+                                        class="btn rounded-circle p-1 mx-auto"
+                                        style="background-color: #FF3837; width: 50px; height: 50px;">
+                                        <div class="rounded-circle w-100 h-100" style="border:2px solid #3c3c3c">
+                                             <img src="Svgs/ic_done.svg" class="selected-color d-block">
+                                        </div>
+                                   </button>
+                              </div>
+                              <div>
+                                   <button type="button" onclick="selecionarCor(this)"
+                                        class="btn rounded-circle p-1 mx-auto"
+                                        style="background-color: #308AFF; width: 50px; height: 50px;">
+                                        <div class="rounded-circle w-100 h-100" style="border:2px solid #3c3c3c">
+                                             <img src="Svgs/ic_done.svg" class="selected-color d-none">
+                                        </div>
+                                   </button>
+                              </div>
+                              <div>
+                                   <button type="button" onclick="selecionarCor(this)"
+                                        class="btn rounded-circle p-1 mx-auto"
+                                        style="background-color: #FFBC16; width: 50px; height: 50px;">
+                                        <div class="rounded-circle w-100 h-100" style="border:2px solid #3c3c3c">
+                                             <img src="Svgs/ic_done.svg" class="selected-color d-none">
+                                        </div>
+                                   </button>
+                              </div>
+                              <div>
+                                   <button type="button" onclick="selecionarCor(this)"
+                                        class="btn rounded-circle p-1 mx-auto"
+                                        style="background-color: #29B548; width: 50px; height: 50px;">
+                                        <div class="rounded-circle w-100 h-100" style="border:2px solid #3c3c3c">
+                                             <img src="Svgs/ic_done.svg" class="selected-color d-none">
+                                        </div>
+                                   </button>
+                              </div>
+                              <div>
+                                   <button type="button" onclick="selecionarCor(this)"
+                                        class="btn rounded-circle p-1 mx-auto"
+                                        style="background-color: #FA8737; width: 50px; height: 50px;">
+                                        <div class="rounded-circle w-100 h-100" style="border:2px solid #3c3c3c">
+                                             <img src="Svgs/ic_done.svg" class="selected-color d-none">
+                                        </div>
+                                   </button>
+                              </div>
+                              <div>
+                                   <button type="button" onclick="selecionarCor(this)"
+                                        class="btn rounded-circle p-1 mx-auto"
+                                        style="background-color: #2ED2EB; width: 50px; height: 50px;">
+                                        <div class="rounded-circle w-100 h-100" style="border:2px solid #3c3c3c">
+                                             <img src="Svgs/ic_done.svg" class="selected-color d-none">
+                                        </div>
+                                   </button>
+                              </div>
+                              <div>
+                                   <button type="button" onclick="selecionarCor(this)"
+                                        class="btn rounded-circle p-1 mx-auto"
+                                        style="background-color: #FF9DB6; width: 50px; height: 50px;">
+                                        <div class="rounded-circle w-100 h-100" style="border:2px solid #3c3c3c">
+                                             <img src="Svgs/ic_done.svg" class="selected-color d-none">
+                                        </div>
+                                   </button>
+                              </div>
+                              <div>
+                                   <button type="button" onclick="selecionarCor(this)"
+                                        class="btn rounded-circle p-1 mx-auto"
+                                        style="background-color: #9471FF; width: 50px; height: 50px;">
+                                        <div class="rounded-circle w-100 h-100" style="border:2px solid #3c3c3c">
+                                             <img src="Svgs/ic_done.svg" class="selected-color d-none">
+                                        </div>
+                                   </button>
+                              </div>
+                              <div>
+                                   <button type="button" onclick="selecionarCor(this)"
+                                        class="btn rounded-circle p-1 mx-auto"
+                                        style="background-color: #87FFCD; width: 50px; height: 50px;">
+                                        <div class="rounded-circle w-100 h-100" style="border:2px solid #3c3c3c">
+                                             <img src="Svgs/ic_done.svg" class="selected-color d-none">
+                                        </div>
+                                   </button>
+                              </div>
+                              <div>
+                                   <button type="button" onclick="selecionarCor(this)"
+                                        class="btn rounded-circle p-1 mx-auto"
+                                        style="background-color: #FF23A5; width: 50px; height: 50px;">
+                                        <div class="rounded-circle w-100 h-100" style="border:2px solid #3c3c3c">
+                                             <img src="Svgs/ic_done.svg" class="selected-color d-none">
+                                        </div>
+                                   </button>
+                              </div>
+                              <div>
+                                   <button type="button" onclick="selecionarCor(this)"
+                                        class="btn rounded-circle p-1 mx-auto"
+                                        style="background-color: #6E69FA; width: 50px; height: 50px;">
+                                        <div class="rounded-circle w-100 h-100" style="border:2px solid #3c3c3c">
+                                             <img src="Svgs/ic_done.svg" class="selected-color d-none">
+                                        </div>
+                                   </button>
+                              </div>
+                              <div>
+                                   <button type="button" onclick="selecionarCor(this)"
+                                        class="btn rounded-circle p-1 mx-auto"
+                                        style="background-color: #ACACAC; width: 50px; height: 50px;">
+                                        <div class="rounded-circle w-100 h-100" style="border:2px solid #3c3c3c">
+                                             <img src="Svgs/ic_done.svg" class="selected-color d-none">
+                                        </div>
+                                   </button>
+                              </div>
+                         </div>
+
+                         <button aria-label="Previous" class="glider-prev glider-prev-colors">«</button>
+                         <button aria-label="Next" class="glider-next glider-next-colors">»</button>
+                         <div role="tablist" class="dots dots-colors"></div>
+                    </div>
+               </div>
+
+               <div class="d-grid gap-2 mt-5">
+                    <button class="btn text-light text-start" type="button" data-bs-toggle="modal"
+                         data-bs-target="#modalStage">
+                         <span><img src="Svgs/ic_stage.svg" alt="" height="50px"></span>
+                         <span class="fw-bold">Selecionar Cenários</span>
+                    </button>
+
+
+                    <button class="btn text-light text-start" type="button">
+                         <span><img src="Svgs/qr_code.svg" height="50px"></span>
+                         <span class="fw-bold">Gerar QR Code</span>
+                    </button>
+
+
+                    <button class="btn text-light text-start" type="button">
+                         <span><img src="Svgs/download.svg" alt="" height="50px"></span>
+                         <span class="fw-bold">Baixar Anotação</span>
+                    </button>
+               </div>
+          </div>
+     </div>
+</body>
+
+
+<div class="modal fade" id="modalChar" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+     aria-labelledby="modalChar" aria-hidden="true">
+     <div class="modal-dialog modal-dialog-centered modal-xl">
+          <div class="modal-content text-white">
+               <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"> <span><img src="Svgs/char/ic_char_00.svg"
+                                   height="50px"></span> Selecione um Personagem</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                         aria-label="Close"></button>
+               </div>
+               <div class="modal-body p-5">
+                    <div class="glider-contain text-center mt-4">
+                         <div class="glider glider-char" id="glider-char">
+                         </div>
+
+                         <button aria-label="Previous" class="glider-prev glider-prev-char">«</button>
+                         <button aria-label="Next" class="glider-next glider-next-char">»</button>
+                         <div role="tablist" class="dots dots-char"></div>
+                    </div>
+               </div>
+               <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-warning fw-bold "
+                         data-bs-dismiss="modal">Cancelar</button>
+               </div>
+          </div>
+     </div>
+</div>
+
+<div class="modal fade" id="modalStage" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+     aria-labelledby="modalStage" aria-hidden="true">
+     <div class="modal-dialog modal-dialog-centered modal-xl">
+          <div class="modal-content text-white">
+               <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"> <span><img src="Svgs/ic_stage.svg"
+                                   height="50px"></span> Selecione Cenários</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                         aria-label="Close"></button>
+               </div>
+               <div class="modal-body p-5">
+                    <div class="glider-contain text-center mt-4">
+                         <div class="glider glider-select-stage" id="glider-select-stage">
+                              <div>
+                                   <button type="button" class="btn card-view m-2 btn-select-stage"
+                                        onclick="selecionarStage(this)">
+                                        <span class="stage-name">Battlefield</span>
+                                        <img src="Svgs/ic_done_stage.svg" height="20px" class="stage-selected d-none">
+                                        <img src="Svgs/stage/ic_stage_01.svg" class="py-2 px-5 stage">
+                                   </button>
+                                   <button type="button" class="btn card-view m-2 btn-select-stage"
+                                        onclick="selecionarStage(this)">
+                                        <span class="stage-name">Small Battlefield</span>
+                                        <img src="Svgs/ic_done_stage.svg" height="20px" class="stage-selected d-none">
+                                        <img src="Svgs/stage/ic_stage_02.svg" class="py-2 px-5 stage">
+                                   </button>
+                              </div>
+
+                              <div>
+
+                                   <button type="button" class="btn card-view m-2 btn-select-stage"
+                                        onclick="selecionarStage(this)">
+                                        <span class="stage-name">Final Destination</span>
+                                        <img src="Svgs/ic_done_stage.svg" height="20px" class="stage-selected d-none">
+                                        <img src="Svgs/stage/ic_stage_03.svg" class="py-2 px-5 stage">
+                                   </button>
+                                   <button type="button" class="btn card-view m-2 btn-select-stage"
+                                        onclick="selecionarStage(this)">
+                                        <span class="stage-name">Yoshi's Story</span>
+                                        <img src="Svgs/ic_done_stage.svg" height="20px" class="stage-selected d-none">
+                                        <img src="Svgs/stage/ic_stage_04.svg" class="py-2 px-5 stage">
+                                   </button>
+                              </div>
+
+                              <div>
+                                   <button type="button" class="btn card-view m-2 btn-select-stage"
+                                        onclick="selecionarStage(this)">
+                                        <span class="stage-name">Lylat Cruise</span>
+                                        <img src="Svgs/ic_done_stage.svg" height="20px" class="stage-selected d-none">
+                                        <img src="Svgs/stage/ic_stage_05.svg" class="py-2 px-5 stage">
+                                   </button>
+                                   <button type="button" class="btn card-view m-2 btn-select-stage"
+                                        onclick="selecionarStage(this)">
+                                        <span class="stage-name">Pokémon Stadium 2</span>
+                                        <img src="Svgs/ic_done_stage.svg" height="20px" class="stage-selected d-none">
+                                        <img src="Svgs/stage/ic_stage_06.svg" class="py-2 px-5 stage">
+                                   </button>
+                              </div>
+
+                              <div>
+                                   <button type="button" class="btn card-view m-2 btn-select-stage"
+                                        onclick="selecionarStage(this)">
+                                        <span class="stage-name">Smashville</span>
+                                        <img src="Svgs/ic_done_stage.svg" height="20px" class="stage-selected d-none">
+                                        <img src="Svgs/stage/ic_stage_07.svg" class="py-2 px-5 stage">
+                                   </button>
+                                   <button type="button" class="btn card-view m-2 btn-select-stage"
+                                        onclick="selecionarStage(this)">
+                                        <span class="stage-name">Kalos Pokémon League</span>
+                                        <img src="Svgs/ic_done_stage.svg" height="20px" class="stage-selected d-none">
+                                        <img src="Svgs/stage/ic_stage_08.svg" class="py-2 px-5 stage">
+                                   </button>
+                              </div>
+
+                              <div>
+                                   <button type="button" class="btn card-view m-2 btn-select-stage"
+                                        onclick="selecionarStage(this)">
+                                        <span class="stage-name">Town and City</span>
+                                        <img src="Svgs/ic_done_stage.svg" height="20px" class="stage-selected d-none">
+                                        <img src="Svgs/stage/ic_stage_09.svg" class="py-2 px-5 stage">
+                                   </button>
+                                   <button type="button" class="btn card-view m-2 btn-select-stage"
+                                        onclick="selecionarStage(this)">
+                                        <span class="stage-name">Northern Cave</span>
+                                        <img src="Svgs/ic_done_stage.svg" height="20px" class="stage-selected d-none">
+                                        <img src="Svgs/stage/ic_stage_10.svg" class="py-2 px-5 stage">
+                                   </button>
+                              </div>
+                         </div>
+
+                         <button aria-label="Previous" class="glider-prev glider-prev-select-stage">«</button>
+                         <button aria-label="Next" class="glider-next glider-next-select-stage">»</button>
+                         <div role="tablist" class="dots dots-select-stage"></div>
+                    </div>
+               </div>
+               <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-warning fw-bold "
+                         data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-outline-warning fw-bold " data-bs-dismiss="modal"
+                         id="confimar-stages">Confirmar</button>
+               </div>
+          </div>
+     </div>
+</div>
+
+
+<div class="card-view m-2 remover d-none" id="add">
+     <div>Nome</div>
+     <img src="Svgs/stage/ic_stage_01.svg" class="py-2 px-5 stage">
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+     integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+     crossorigin="anonymous"></script>
+
+<script src="js/index.js"></script>
+<script src="js/glider.min.js"></script>
+
+</html>
