@@ -291,18 +291,6 @@ jQuery.fn.extend({
           });
      }
 });
-$('#anotacao').autoHeight();
-
-//ANCHOR Automatic Date
-var options = {
-     weekday: 'long',
-     day: 'numeric',
-     month: 'numeric',
-     year: '2-digit',
-     hour: 'numeric',
-     minute: 'numeric'
-}
-document.getElementById('date').innerHTML = new Intl.DateTimeFormat('pt-BR', options).format(new Date);
 
 function gerarJson() {
      var titulo = $('#titulo').val();
