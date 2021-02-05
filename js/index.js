@@ -1,3 +1,88 @@
+var char_names = [
+     "",
+     "mario",
+     "donkey kong",
+     "link",
+     "samus",
+     "dark samus",
+     "yoshi",
+     "kirby",
+     "fox",
+     "pikachu",
+     "luigi",
+     "ness",
+     "captain falcon",
+     "jigglypuff",
+     "peach",
+     "daisy",
+     "bowser",
+     "ice climber",
+     "sheik",
+     "zelda",
+     "dr. mario",
+     "pichu",
+     "falco",
+     "marth",
+     "lucina",
+     "young link",
+     "ganondorf",
+     "mewtwo",
+     "roy",
+     "chrom",
+     "mr. game & watch",
+     "meta knight",
+     "pit",
+     "dark pit",
+     "zero suit samus",
+     "wario",
+     "snake",
+     "ike",
+     "pokémon trainer",
+     "diddy kong",
+     "lucas",
+     "sonic",
+     "king dedede",
+     "olimar",
+     "lucario",
+     "rob",
+     "toon link",
+     "wolf",
+     "villager",
+     "megaman",
+     "wiifit trainer",
+     "rosalina & luma",
+     "little mac",
+     "greninja",
+     "mii fighter",
+     "palutena",
+     "pac-man",
+     "robin",
+     "shulk",
+     "bowser jr.",
+     "duckhunt",
+     "ryu",
+     "ken",
+     "cloud",
+     "corrin",
+     "bayonetta",
+     "inkling",
+     "ridley",
+     "simon",
+     "richter",
+     "king k. rool",
+     "isabelle",
+     "incineroar",
+     "piranha plant",
+     "joker",
+     "hero",
+     "banjo & kazooie",
+     "terry",
+     "byleth",
+     "min min",
+     "steve",
+     "sephiroth",
+]
+
 window.addEventListener('load', function () {
      //ANCHOR Carousel Stages
      var carouselStages = new Glider(document.querySelector('.glider-stages'), {
@@ -16,7 +101,7 @@ window.addEventListener('load', function () {
           var selecionados = $('.btn-select-stage.selected');
 
           var remover = $('#stages-selecionados').find('.remover');
-          remover.each(function (i, stage){
+          remover.each(function (i, stage) {
                carouselStages.removeItem(0);
           });
 
@@ -24,7 +109,7 @@ window.addEventListener('load', function () {
                var ele = document.getElementById('add').cloneNode(true);
 
                ele.querySelector('div').textContent = $(stage).find('.stage-name').html();
-               $(ele).find('.stage').attr('src',$(stage).find('.stage').attr('src'));
+               $(ele).find('.stage').attr('src', $(stage).find('.stage').attr('src'));
                $(ele).removeClass('d-none');
 
 
@@ -196,8 +281,78 @@ var options = {
      weekday: 'long',
      day: 'numeric',
      month: 'numeric',
-     year: 'numeric',
+     year: '2-digit',
      hour: 'numeric',
      minute: 'numeric'
 }
 document.getElementById('date').innerHTML = new Intl.DateTimeFormat('pt-BR', options).format(new Date);
+
+
+function downloadNota() {
+
+     var titulo = $('#titulo').val();
+     var nota = $('#anotacao').val();
+     var p1 = $('#player1').attr('src').replace('Svgs/char/', '').replace('.svg', '');
+     var p2 = $('#player2').attr('src').replace('Svgs/char/', '').replace('.svg', '');
+     var color = rgb2hex($('#selected-color').css('background-color'));
+     var date = $('#date').html();
+
+     var p1_name = p1.match(/\d/g);
+     p1_name = char_names[Number(p1_name.join(""))];
+
+     var p2_name = p2.match(/\d/g);
+     p2_name = char_names[Number(p2_name.join(""))];
+
+     var stages = $('#stages-selecionados').find('.card-stage');
+     var selecionados = [];
+     stages.each(function (i, div) {
+          var img = $(div).find('.stage').attr('src').replace('Svgs/stage/', '').replace('.svg', '');
+          var stage_name = $(div).find('.stage-name').html();
+          var stage_id = img.match(/\d/g);
+          stage_id = Number(stage_id.join(""));
+
+          var stage = {
+               "idStage": stage_id,
+               "img": img,
+               "name": stage_name
+          }
+          selecionados.push(stage);
+     });
+
+
+     var note = {
+          "color": color.toUpperCase(),
+          "dateTime": date,
+          "idNote": 0,
+          "noteText": nota,
+          "player1Img": p1,
+          "player1Name": p1_name,
+          "player2Img": p2,
+          "player2Name": p2_name,
+          "stages": selecionados,
+          "title": titulo
+     }
+
+     var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(note));
+     var downloadAnchorNode = document.createElement('a');
+     var exportName = `${note.player1Name.replace(' ', '_')}_vs_${note.player2Name.replace(' ', '_')}`;
+
+     downloadAnchorNode.setAttribute("href", dataStr);
+     downloadAnchorNode.setAttribute("download", exportName + ".json");
+     document.body.appendChild(downloadAnchorNode); // required for firefox
+     downloadAnchorNode.click();
+     downloadAnchorNode.remove();
+}
+
+var hexDigits = new Array
+     ("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f");
+
+//Function to convert rgb color to hex format
+function rgb2hex(rgb) {
+     rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+     return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
+}
+
+function hex(x) {
+     return isNaN(x) ? "00" : hexDigits[(x - x % 16) / 16] + hexDigits[x % 16];
+}

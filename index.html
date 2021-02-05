@@ -63,7 +63,7 @@
                <div class="col-auto rounded px-1" style="background-color: #FF3837;" id="selected-color"></div>
                <div class="col">
                     <input type="text" class="form-control bg-transparent border-0 text-light fw-bold fs-1"
-                         placeholder="Título da Anotação">
+                         placeholder="Título da Anotação" id="titulo">
                </div>
           </div>
 
@@ -242,7 +242,7 @@
                     </button>
 
 
-                    <button class="btn text-light text-start" type="button">
+                    <button class="btn text-light text-start" type="button" onclick="downloadNota()">
                          <span><img src="Svgs/download.svg" alt="" height="50px"></span>
                          <span class="fw-bold">Baixar Anotação</span>
                     </button>
@@ -386,8 +386,8 @@
 </div>
 
 
-<div class="card-view m-2 remover d-none" id="add">
-     <div>Nome</div>
+<div class="card-view m-2 remover d-none card-stage" id="add">
+     <div class="stage-name">Nome</div>
      <img src="Svgs/stage/ic_stage_01.svg" class="py-2 px-5 stage">
 </div>
 
