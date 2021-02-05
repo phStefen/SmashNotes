@@ -231,6 +231,23 @@ window.addEventListener('load', function () {
                $(btn).removeClass('selected')
           });
      })
+
+     var modalQrcode = document.getElementById('modalQrCode')
+     modalQrcode.addEventListener('show.bs.modal', function () {
+          var note = gerarJson();
+          $('#qrCode').qrcode({
+               text: JSON.stringify(note),
+               render:'canvas',
+               mode: 0,
+               ecLevel: 'H',
+               size: 350,
+               quiet: 5,
+          });
+     })
+
+     modalQrcode.addEventListener('hidden.bs.modal', function () {
+          $('#qrCode').html('');
+     })
 })
 
 function selecionarChar(button, player) {
@@ -287,9 +304,7 @@ var options = {
 }
 document.getElementById('date').innerHTML = new Intl.DateTimeFormat('pt-BR', options).format(new Date);
 
-
-function downloadNota() {
-
+function gerarJson() {
      var titulo = $('#titulo').val();
      var nota = $('#anotacao').val();
      var p1 = $('#player1').attr('src').replace('Svgs/char/', '').replace('.svg', '');
@@ -333,6 +348,11 @@ function downloadNota() {
           "title": titulo
      }
 
+     return note;
+}
+
+function downloadNota() {
+     var note = gerarJson()
      var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(note));
      var downloadAnchorNode = document.createElement('a');
      var exportName = `${note.player1Name.replace(' ', '_')}_vs_${note.player2Name.replace(' ', '_')}`;
