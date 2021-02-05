@@ -59,12 +59,57 @@
 </head>
 
 <body style="background-color: #3C3C3C;">
+     <nav class="navbar navbar-dark bg-dark">
+          <div class="container-fluid">
+               <a class="navbar-brand" href="#">
+                    <img src="Svgs/smashball.svg" width="30" height="24" class="d-inline-block align-top">
+                    Smash Notes
+                    <span class="navbar-text fs-6">
+                         made by <span class="fst-italic">phStefen</span>
+                    </span>
+               </a>
+
+               <div class="navbar-nav ">
+                    <a class="nav-link" href="#">
+                         <img src="Svgs/ic_play_store.svg" width="25px">
+                         <span class="align-middle">Someday will be Available in the Play Store</span>
+                    </a>
+               </div>
+               <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+               </button>
+               <div class="collapse navbar-collapse border-top border-secondary mt-3" id="navbarNavAltMarkup">
+                    <div class="navbar-nav">
+                         <a class="nav-link" href="https://twitter.com/amdsBotila" target="_blank">
+                              <img src="Svgs/ic_twitter.svg" width="25px">
+                              <span class="align-middle">@amdsBotila</span>
+                         </a>
+                         <a class="nav-link" href="https://github.com/phStefen" target="_blank">
+                              <img src="Svgs/ic_github.svg" width="25px">
+                              <span class="align-middle">phStefen</span>
+                         </a>
+                         <a class="nav-link" href="https://www.linkedin.com/in/phStefen/" target="_blank">
+                              <img src="Svgs/ic_linkdin.svg" width="25px">
+                              <span class="align-middle">phStefen</span>
+                         </a>
+                         <span class="nav-link">
+                              <img src="Svgs/ic_email.svg" width="25px">
+                              <span class="align-middle">raph.stefen@gmail.com</span>
+                         </span>
+                    </div>
+               </div>
+          </div>
+     </nav>
+
+
      <div class="container mt-5 text-light mb-0">
           <div class="row">
                <div class="col-auto rounded px-1" style="background-color: #FF3837;" id="selected-color"></div>
                <div class="col">
                     <input type="text" class="form-control bg-transparent border-0 text-light fw-bold fs-1"
-                         placeholder="Título da Anotação" id="titulo">
+                         placeholder="Note's Title" id="titulo">
                </div>
           </div>
 
@@ -99,14 +144,14 @@
           </div>
 
           <div class="row">
-               <textarea class="form-control border-0 text-light bg-transparent" placeholder="Faça sua Anotação..."
-                    rows="5" id="anotacao"></textarea>
+               <textarea class="form-control border-0 text-light bg-transparent" placeholder="Your Note..." rows="5"
+                    id="anotacao"></textarea>
           </div>
 
           <div style="border-radius: 15px 15px 0 0; background-color: #292929;" class="px-2 py-4 mt-5">
                <div class="row mt-2">
                     <div class="my-auto text-center fw-bold">
-                         Selecione uma Cor
+                         Pick a Color
                     </div>
                </div>
 
@@ -233,20 +278,20 @@
                     <button class="btn text-light text-start" type="button" data-bs-toggle="modal"
                          data-bs-target="#modalStage">
                          <span><img src="Svgs/ic_stage.svg" alt="" height="50px"></span>
-                         <span class="fw-bold">Selecionar Cenários</span>
+                         <span class="fw-bold">Stage List</span>
                     </button>
 
 
                     <button class="btn text-light text-start" type="button" data-bs-toggle="modal"
                          data-bs-target="#modalQrCode">
                          <span><img src="Svgs/qr_code.svg" height="50px"></span>
-                         <span class="fw-bold">Gerar QR Code</span>
+                         <span class="fw-bold">Generate QR Code</span>
                     </button>
 
 
                     <button class="btn text-light text-start" type="button" onclick="downloadNota()">
                          <span><img src="Svgs/download.svg" alt="" height="50px"></span>
-                         <span class="fw-bold">Baixar Anotação</span>
+                         <span class="fw-bold">Download Note</span>
                     </button>
                </div>
           </div>
@@ -260,7 +305,7 @@
           <div class="modal-content text-white">
                <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel"> <span><img src="Svgs/char/ic_char_00.svg"
-                                   height="50px"></span> Selecione um Personagem</h5>
+                                   height="50px"></span> Choose your Character</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                          aria-label="Close"></button>
                </div>
@@ -276,7 +321,7 @@
                </div>
                <div class="modal-footer">
                     <button type="button" class="btn btn-outline-warning fw-bold "
-                         data-bs-dismiss="modal">Cancelar</button>
+                         data-bs-dismiss="modal">Cancel</button>
                </div>
           </div>
      </div>
@@ -288,7 +333,7 @@
           <div class="modal-content text-white">
                <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel"> <span><img src="Svgs/ic_stage.svg"
-                                   height="50px"></span> Selecione Cenários</h5>
+                                   height="50px"></span> Stage List</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                          aria-label="Close"></button>
                </div>
@@ -379,9 +424,9 @@
                </div>
                <div class="modal-footer">
                     <button type="button" class="btn btn-outline-warning fw-bold "
-                         data-bs-dismiss="modal">Cancelar</button>
+                         data-bs-dismiss="modal">Cancel</button>
                     <button type="button" class="btn btn-outline-warning fw-bold " data-bs-dismiss="modal"
-                         id="confimar-stages">Confirmar</button>
+                         id="confimar-stages">Confirm</button>
                </div>
           </div>
      </div>
@@ -392,7 +437,7 @@
           <div class="modal-content text-white">
                <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel"> <span><img src="Svgs/qr_code.svg"
-                                   height="50px"></span> Escaneie pelo Aplicativo</h5>
+                                   height="50px"></span> Open the App Scanner</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                          aria-label="Close"></button>
                </div>
