@@ -81,6 +81,7 @@ var char_names = [
      "min min",
      "steve",
      "sephiroth",
+     "pyra"
 ]
 
 window.addEventListener('load', function () {
@@ -150,7 +151,7 @@ window.addEventListener('load', function () {
 
      var i = 1;
      var char = "";
-     var charQtd = 81
+     var charQtd = 82
 
      while (i <= charQtd) {
           var div;
